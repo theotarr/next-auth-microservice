@@ -1,11 +1,17 @@
 import React from 'react'
+import { SessionProvider } from 'next-auth/react'
 
 import { AppProps } from 'next/app'
 import '../../styles/globals.css'
 
 const MyApp = ({ Component, pageProps }: AppProps) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
-  <Component {...pageProps} />
+  <SessionProvider
+    session={pageProps.session}
+    basePath={process.env.NEXT_PUBLIC_NEXTAUTH_URL + '/api/auth'}
+  >
+    <Component {...pageProps} />
+  </SessionProvider>
 )
 
 export default MyApp

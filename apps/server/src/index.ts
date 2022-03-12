@@ -1,12 +1,33 @@
+import cors from 'cors'
 import express from 'express'
+import NextAuth from './auth'
+import GithubProvider from 'next-auth/providers/github'
+import prisma from 'prisma'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+
+require('dotenv').config({ path: '../../.env.local' })
 
 const app = express()
-const port = 4000
+const port = process.env.PORT || 4000
+app.use(
+  cors({
+    origin: '*',
+  }),
+)
 
-app.get('/', (_req, res) => {
-  res.send('Hello World haha!')
-})
+app.use(
+  NextAuth({
+    // adapter: PrismaAdapter(prisma),
+    providers: [
+      GithubProvider({
+        clientId: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      }),
+    ],
+    secret: process.env.SECRET,
+  }),
+)
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Server listening on http://localhost:${port}`)
 })
