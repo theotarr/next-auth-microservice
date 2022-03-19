@@ -32,15 +32,15 @@ export default function NextAuthMiddleware(options: NextAuthOptions) {
       if (req.method !== 'POST' && req.method !== 'GET') {
         return next()
       }
+
       //@ts-ignore
       req.query.nextauth = req.path.split('/').slice(3)
       //@ts-ignore
-      let callbackURL = req.query.redirectCallback
-
-      if (callbackURL) {
+      if (req.query.redirectCallback) {
         options.callbacks = {
-          async redirect() {
-            return callbackURL
+          redirect() {
+            // @ts-ignore
+            return req.query.redirectCallback
           },
         }
       }
