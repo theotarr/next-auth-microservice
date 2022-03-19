@@ -1,10 +1,15 @@
 import { Router } from 'express'
 import cookieParser from 'cookie-parser'
 import { json, urlencoded } from 'body-parser'
-import { IncomingMessage, ServerResponse } from 'http'
 import NextAuth, { NextAuthOptions } from 'next-auth'
+import { IncomingMessage, ServerResponse } from 'http'
+
+const authActions =
+  /^\/api\/auth\/(session|signin\/?\w*|signout|csrf|providers|callback\/\w+|_log)$/
+const router = Router()
 
 /**
+ * Compatibility layer for `next-auth` for `express` apps.
  * Should match the following paths:
  * /api/auth/signin
  * /api/auth/signin/:provider
@@ -16,26 +21,19 @@ import NextAuth, { NextAuthOptions } from 'next-auth'
  * /api/auth/_log
  *
  * See: https://next-auth.js.org/getting-started/rest-api
+ * @param options - Options for NextAuth
  */
-const authActions =
-  /^\/api\/auth\/(session|signin\/?\w*|signout|csrf|providers|callback\/\w+|_log)$/
-
-const router = Router()
-
-/** Compatibility layer for `next-auth` for `express` apps.  */
 export default function NextAuthMiddleware(options: NextAuthOptions) {
   return router
     .use(urlencoded({ extended: false }))
     .use(json())
     .use(cookieParser())
     .all(authActions, (req: IncomingMessage, res: ServerResponse, next) => {
-      if (req.method !== 'POST' && req.method !== 'GET') {
-        return next()
-      }
+      if (req.method !== 'POST' && req.method !== 'GET') return next()
 
-      //@ts-ignore
+      // @ts-expect-error - next-auth reqs have a `query` property while the express reqs don't
       req.query.nextauth = req.path.split('/').slice(3)
-      //@ts-ignore
+      // @ts-expect-error - next-auth reqs have a `query` property while the express reqs don't
       if (req.query.redirectCallback) {
         options.callbacks = {
           redirect() {
@@ -44,8 +42,7 @@ export default function NextAuthMiddleware(options: NextAuthOptions) {
           },
         }
       }
-
-      //@ts-ignore
-      NextAuth(req, res, options)
+      // @ts-expect-error - next-auth expects a `req` object
+      return NextAuth(req, res, options)
     })
 }

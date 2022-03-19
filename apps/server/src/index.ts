@@ -1,56 +1,53 @@
 import cors from 'cors'
+import dotenv from 'dotenv'
 import express from 'express'
-import NextAuth from './auth'
 import GithubProvider from 'next-auth/providers/github'
-// import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from 'prisma'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import NextAuth from './auth'
 
-
-// import environment variables
-require('dotenv').config({ path: '../../.env.local' })
+dotenv.config({ path: '../../.env.local' })
 
 const app = express()
 const port = process.env.PORT || 4000
+const prisma = new PrismaClient()
 
-
-process.env.NEXTAUTH_URL = `http://localhost:${port}`
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true,
-    allowedHeaders: ['X-CSRF-Token', 'X-Requested-With', 'Accept', 'Accept-Version', 'Content-Length', 'Content-MD5', 'Content-Type', 'Date', 'X-Api-Version'],
-  }),
-)
-
-const useSecureCookies = process.env.NEXTAUTH_URL.startsWith('https://')
+// Next Auth cookie configuration
+const useSecureCookies = process?.env?.NEXTAUTH_URL?.startsWith('https://') ?? false
 const cookiePrefix = useSecureCookies ? '__Secure-' : ''
 const hostName = 'localhost'
 
-app.use(
-  NextAuth({
-    // adapter: PrismaAdapter(PrismaClient()),
-    providers: [
-      GithubProvider({
-        clientId: process.env.GITHUB_CLIENT_ID,
-        clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      }),
-    ],
-    cookies: {
-      sessionToken: {
-        name: `${cookiePrefix}next-auth.session-token`,
-        options: {
-          httpOnly: true,
-          sameSite: 'lax',
-          path: '/',
-          secure: useSecureCookies,
-          domain: hostName == 'localhost' ? hostName : '.' + hostName // add a . in front so that subdomains are included
-        }
-      },
-    },
-  }),
-)
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['X-Requested-With', 'Access-Control-Allow-Headers', 'Origin', 'Content-Type', 'Access-Control-Request-Method', 'Access-Control-Request-Headers', 'X-CSRF-Token', 'X-Requested-With', 'Accept', 'Accept-Version', 'Content-Length', 'Content-MD5', 'Content-Type', 'Date', 'X-Api-Version', 'X-Auth-Token', 'Authorization'],
+}
 
-app.listen(port, () => {
-  console.log(`Server listening on http://localhost:${port}`)
-})
+const nextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+  ],
+  cookies: {
+    sessionToken: {
+      name: `${cookiePrefix}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: '/',
+        secure: useSecureCookies,
+        domain: hostName === 'localhost' ? hostName : `.${hostName}` // add a . in front so that subdomains are included
+      }
+    },
+  },
+}
+
+app.use(cors(corsOptions))
+// @ts-expect-error - ts thinks that sameSite is not a valid option for cookieOptions
+app.use(NextAuth(nextAuthOptions))
+
+app.listen(port, () => console.log(`Server listening on http://localhost:${port}`))
