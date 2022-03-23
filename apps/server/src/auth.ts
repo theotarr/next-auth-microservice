@@ -35,9 +35,10 @@ export default function NextAuthMiddleware(options: NextAuthOptions) {
       req.query.nextauth = req.path.split('/').slice(3)
       // @ts-expect-error - next-auth reqs have a `query` property while the express reqs don't
       if (req.query.redirectCallback) {
+        // eslint-disable-next-line
         options.callbacks = {
           redirect() {
-            // @ts-ignore
+            // @ts-expect-error - next-auth reqs have a `query` property while the express reqs don't
             return req.query.redirectCallback
           },
         }

@@ -1,5 +1,5 @@
 {
-  "name": "turborepo-basic-yarn",
+  "name": "next-auth-microservice",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
