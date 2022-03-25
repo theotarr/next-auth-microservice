@@ -13,6 +13,20 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
+  "turbo": {
+    "pipeline": {
+      "build": {
+        "build": ["^build"],
+        "outputs": ["dist/**", ".next/**"]
+      },
+      "lint": {
+        "outputs": []
+      },
+      "dev": {
+        "cache": false
+      }
+    }
+  },  
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
@@ -28,30 +42,6 @@
     "msw": "^0.36.3",
     "prettier": "^2.5.1",
     "turbo": "*"
-  },
-  "turbo": {
-    "pipeline": {
-      "build": {
-        "outputs": [
-          "dist/**",
-          ".next/**"
-        ]
-      },
-      "test": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          "coverage/**"
-        ]
-      },
-      "lint": {
-        "outputs": []
-      },
-      "dev": {
-        "cache": false
-      }
-    }
   },
   "lint-staged": {
     "apps/**/*.{js,ts,jsx,tsx}": [
