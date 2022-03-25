@@ -2,7 +2,8 @@ import React from 'react'
 import useSWR from 'swr'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { PrismaClient, User } from '@prisma/client'
+import { User } from '@prisma/client'
+import prisma from '../lib/prisma'
 
 const Home = ({ users }: { users: User[] }) => {
   const { data: session } = useSWR(
@@ -61,7 +62,6 @@ const Home = ({ users }: { users: User[] }) => {
 }
 
 export const getServerSideProps = async () => {
-  const prisma = new PrismaClient()
   const users = await prisma.user.findMany()
   return { props: { users } }
 }
