@@ -6,7 +6,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import prisma from './lib/prisma'
 import NextAuth from './auth'
 
-dotenv.config({ path: '../../.env.local' })
+dotenv.config({ path: '../../.env' })
 
 const app = express()
 const port = process.env.PORT || 4000
