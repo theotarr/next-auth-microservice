@@ -2,6 +2,8 @@
 
 This is an example of how to use Next Auth as a microservice and inside a monorepo. Basically I've built a custom backend Express wrapper of Next Auth that handles authentication and any other things you may need.
 
+I've written a [blog post](https://theotarr.com/blog/next-auth-microservice) about this that goes into the story and reasons why I chose to expiriment with this approach.
+
 ## What's inside?
 
 This turborepo uses [Yarn](https://classic.yarnpkg.com/lang/en/) as a package manager. It includes the following packages/apps:
