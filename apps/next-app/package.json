@@ -9,6 +9,9 @@
     "test": "jest --coverage",
     "lint": "eslint src --fix"
   },
+  "prisma": {
+    "schema": "../../packages/prisma/prisma/schema.prisma"
+  },
   "dependencies": {
     "@prisma/client": "^3.11.0",
     "dotenv": "^16.0.0",
