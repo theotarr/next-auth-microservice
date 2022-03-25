@@ -41,7 +41,9 @@ This turborepo has some additional tools already setup for you:
 
 ## Setup
 
-This repository is used in the `npx create-turbo` command, and selected when choosing which package manager you wish to use with your monorepo (Yarn).
+First, create a `.env` file in the root of the monorepo, copy and paste the `.env.example` and fill in the fields with the proper credentials.
+
+Second, navigate to the `prisma` package (`./packages/prisma`) and create a `.env` file with only your `DATABASE_URL` inside. (Prisma only looks to the root of the prisma package for the `.env` file)
 
 ### Build
 
