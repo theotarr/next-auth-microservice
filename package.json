@@ -32,9 +32,6 @@
   "turbo": {
     "pipeline": {
       "build": {
-        "dependsOn": [
-          "^build"
-        ],
         "outputs": [
           "dist/**",
           ".next/**"

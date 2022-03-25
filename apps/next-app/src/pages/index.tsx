@@ -27,10 +27,7 @@ const Home = ({ users }: { users: User[] }) => {
           <h1>{session?.user?.email}</h1>
           <br />
           <a
-            href={
-              `${process.env.NEXTAUTH_URL 
-              }/api/auth/signin?redirectCallback=http://localhost:3000`
-            }
+            href={`${process.env.NEXTAUTH_URL}/api/auth/signin?redirectCallback=http://localhost:3000`}
           >
             signIn
           </a>
