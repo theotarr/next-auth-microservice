@@ -18,8 +18,7 @@
     "react-dom": "^17.0.2",
     "server": "*",
     "swr": "^1.2.2",
-    "ui": "*",
-    "prisma": "*"
+    "ui": "*"
   },
   "devDependencies": {
     "@types/node": "^17.0.0",
@@ -31,6 +30,7 @@
     "postcss": "^8.4.4",
     "tailwindcss": "^3.0.0",
     "tsconfig": "*",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "prisma": "^3.11.0"
   }
 }

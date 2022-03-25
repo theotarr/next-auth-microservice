@@ -31,7 +31,6 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.1",
     "isomorphic-fetch": "^3.0.0",
-    "next-auth": "^4.2.1",
-    "prisma": "*"
+    "next-auth": "^4.2.1"
   }
 }

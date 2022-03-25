@@ -11,8 +11,7 @@
     "dev": "turbo run dev --parallel",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "prepare": "husky install"
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.1",
@@ -22,7 +21,6 @@
     "@types/jest": "^27.4.0",
     "esbuild": "^0.14.10",
     "esbuild-jest": "^0.5.0",
-    "husky": "^7.0.4",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.7",
     "jest-watch-typeahead": "^1.0.0",
