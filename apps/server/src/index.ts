@@ -19,9 +19,8 @@ const hostName = 'localhost'
 
 const corsOptions = {
   origin: [
-    'http://localhost:3000',
-    'http://localhost:4000',
-    'https://www.latindictionary.io',
+    'http://localhost:3000'
+    // production domains here...
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true,
